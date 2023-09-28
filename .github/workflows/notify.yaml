@@ -2,7 +2,7 @@ name: Daily job
 
 on:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '48 9 * * *'
 
 jobs:
   run:
@@ -18,5 +18,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run script  
+      env:
+          ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }} 
+          LOCATION_KEY: ${{ secrets.ACCUWEATHER_LOCATION_KEY }}
+          ACCU_KEY: ${{ secrets.ACCU_KEY }}
+          MESSAGE__ID: ${{ secrets.MESSAGE__ID}}
+          PHONE_NUMBER: ${{ secrets.PHONE_NUMBER}}
       run: |
-        python my_script.py
+        python fetch_content.py

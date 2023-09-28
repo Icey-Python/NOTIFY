@@ -1,10 +1,20 @@
 import requests
 from twilio.rest import Client
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
-client = Client(account_sid, auth_token)
+PHONE_NUMBER = os.environ.get('PHONE_NUMBER')
+ACCU_KEY = os.environ.get('ACCU_KEY')
+ACCUWEATHER_LOCATION_KEY = os.environ.get('ACCUWEATHER_LOCATION_KEY')
+TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+TWILIO_ACCOUNT_TOKEN = os.environ.get('TWILIO_ACCOUNT_TOKEN')
+MESSAGE__ID = os.environ.get('MESSAGE__ID')
 
-weather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/1day/{LOCATION_KEY}?apikey={ACCU_KEY}&details=True&metric=True"
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_ACCOUNT_TOKEN)
+
+weather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/1day/{ACCUWEATHER_LOCATION_KEY}?apikey={ACCU_KEY}&details=True&metric=True"
 
 req_data = requests.get(weather_url)
 resp_data = req_data.json()
