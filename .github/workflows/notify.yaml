@@ -20,7 +20,7 @@ jobs:
     - name: Run script  
       env:
           ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }} 
+          AUTH_TOKEN: ${{ secrets.TWILIO_ACCOUNT_TOKEN }} 
           LOCATION_KEY: ${{ secrets.ACCUWEATHER_LOCATION_KEY }}
           ACCU_KEY: ${{ secrets.ACCU_KEY }}
           MESSAGE__ID: ${{ secrets.MESSAGE__ID}}
