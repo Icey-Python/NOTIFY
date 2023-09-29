@@ -6,13 +6,13 @@ import os
 load_dotenv()
 
 
-PHONE_NUMBER = os.getenv('PHONE_NUMBER')
-ACCU_KEY = os.getenv('ACCU_KEY')
-ACCUWEATHER_LOCATION_KEY = os.getenv('ACCUWEATHER_LOCATION_KEY')
+PHONE_NUMBER = "+254702716555"
+ACCU_KEY = "8QK6bvSZbM2nlcrmGzMFmm8dtTuUeQfN"
+ACCUWEATHER_LOCATION_KEY = "828638"
 
-TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')  
-TWILIO_AUTH_TOKEN = os.getenv('TWILIO_ACCOUNT_TOKEN')
-TWILIO_MESSAGE_SERVICE_SID = os.getenv('MESSAGE__ID')
+TWILIO_ACCOUNT_SID = 'AC378ecf70f4815c5698aa80537f92ad92'
+TWILIO_AUTH_TOKEN = '748da38c8c31cae2fa4ab6b3948dc490'  
+TWILIO_MESSAGE_SERVICE_SID = "MG4c30546092c8388c574a14ab6596131a"
 
 client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 print(client)
@@ -47,7 +47,11 @@ Rain Hours:
 Day: {day_rain_hours} hours
 Night: {night_rain_hours} hours
 """
-
+message = client.messages.create(
+    messaging_service_sid=TWILIO_MESSAGE_SERVICE_SID, 
+    body=forecast_msg,
+    to=PHONE_NUMBER
+)
 # message = client.messages.create(
 #     messaging_service_sid=TWILIO_MESSAGE_SERVICE_SID, 
 #     body=forecast_msg,
