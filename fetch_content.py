@@ -12,8 +12,8 @@ TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_ACCOUNT_TOKEN')
 TWILIO_MESSAGE_SERVICE_SID = os.environ.get('MESSAGE__ID')
 
-print(TWILIO_ACCOUNT_SID,TWILIO_AUTH_TOKEN)
-client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+print(os.environ)
+# client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 weather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/1day/{ACCUWEATHER_LOCATION_KEY}?apikey={ACCU_KEY}&details=True&metric=True"
 
@@ -46,8 +46,8 @@ Day: {day_rain_hours} hours
 Night: {night_rain_hours} hours
 """
 
-message = client.messages.create(
-    messaging_service_sid=TWILIO_MESSAGE_SERVICE_SID, 
-    body=forecast_msg,
-    to=PHONE_NUMBER
-)
+# message = client.messages.create(
+#     messaging_service_sid=TWILIO_MESSAGE_SERVICE_SID, 
+#     body=forecast_msg,
+#     to=PHONE_NUMBER
+# )
