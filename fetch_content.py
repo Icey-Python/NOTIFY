@@ -5,62 +5,48 @@ import os
 
 load_dotenv()
 
-PHONE_NUMBER = os.environ.get('PHONE_NUMBER')
-ACCU_KEY = os.environ.get('ACCU_KEY')
-ACCUWEATHER_LOCATION_KEY = os.environ.get('ACCUWEATHER_LOCATION_KEY')
-TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-TWILIO_ACCOUNT_TOKEN = os.environ.get('TWILIO_ACCOUNT_TOKEN')
-MESSAGE__ID = os.environ.get('MESSAGE__ID')
-
-client = Client(TWILIO_ACCOUNT_SID, TWILIO_ACCOUNT_TOKEN)
+PHONE_NUMBER = os.environ['PHONE_NUMBER']
+ACCU_KEY = os.environ['ACCU_KEY']  
+ACCUWEATHER_LOCATION_KEY = os.environ['ACCUWEATHER_LOCATION_KEY']
+TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
+TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
+TWILIO_MESSAGE_SERVICE_SID = os.environ['TWILIO_MESSAGE_SERVICE_SID']
+print(TWILIO_ACCOUNT_SID,TWILIO_AUTH_TOKEN)
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 weather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/1day/{ACCUWEATHER_LOCATION_KEY}?apikey={ACCU_KEY}&details=True&metric=True"
 
-req_data = requests.get(weather_url)
-resp_data = req_data.json()
+weather_data = requests.get(weather_url).json()
 
-headline = resp_data["Headline"]["Text"]
+headline = weather_data["Headline"]["Text"]
+date = weather_data['DailyForecasts'][0]["Date"][0:10]
+min_temp = weather_data['DailyForecasts'][0]["Temperature"]["Minimum"]["Value"]
+max_temp = weather_data['DailyForecasts'][0]["Temperature"]["Maximum"]["Value"]
+day_weather = weather_data['DailyForecasts'][0]["Day"]
+night_weather = weather_data['DailyForecasts'][0]["Night"]
+air_quality = weather_data['DailyForecasts'][0]["AirAndPollen"][0]
+sun_hours = weather_data['DailyForecasts'][0]["HoursOfSun"]
+day_rain_hours = day_weather["HoursOfRain"]
+night_rain_hours = night_weather["HoursOfRain"]
 
-date = resp_data['DailyForecasts'][0]["Date"][0:10]
-
-temp_min = resp_data['DailyForecasts'][0]["Temperature"]["Minimum"]["Value"]
-temp_max = resp_data['DailyForecasts'][0]["Temperature"]["Maximum"]["Value"]
-
-weather_day = resp_data['DailyForecasts'][0]["Day"]
-weather_night = resp_data['DailyForecasts'][0]["Night"]
-
-air_quality = resp_data['DailyForecasts'][0]["AirAndPollen"][0]
-
-sun_hours = resp_data['DailyForecasts'][0]["HoursOfSun"]
-rain_hours_day = weather_day["HoursOfRain"]
-rain_hours_night = weather_night["HoursOfRain"]
-
-forecast = f"""
-Headline: {headline}
-
+forecast_msg = f"""
+Headline: {headline} 
 Date: {date}
-
 Temperature:
-  Minimum: {temp_min}°C
-  Maximum: {temp_max}°C
-
-Weather:
-  Day: {weather_day['IconPhrase']}, {weather_day['RainProbability']}% chance of rain, {rain_hours_day} hours of rain
-  Night: {weather_night['IconPhrase']}
-
+Minimum: {min_temp}°C
+Maximum: {max_temp}°C
+Weather: 
+Day: {day_weather['IconPhrase']}, {day_weather['RainProbability']}% chance of rain, {day_rain_hours} hours of rain
+Night: {night_weather['IconPhrase']}
 Air Quality: {air_quality['Category']}
-
 Sun Hours: {sun_hours} hours
-
-Rain Hours:
-  Day: {rain_hours_day} hours
-  Night: {rain_hours_night} hours
+Rain Hours:  
+Day: {day_rain_hours} hours
+Night: {night_rain_hours} hours
 """
 
 message = client.messages.create(
-    messaging_service_sid=MESSAGE__ID,
-    body = forecast,
-  to=PHONE_NUMBER
+    messaging_service_sid=TWILIO_MESSAGE_SERVICE_SID, 
+    body=forecast_msg,
+    to=PHONE_NUMBER
 )
-
-
