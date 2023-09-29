@@ -5,8 +5,8 @@ import os
 
 load_dotenv()
 
-PHONE_NUMBER = os.environ['PHONE_NUMBER']
-ACCU_KEY = os.environ['ACCU_KEY']  
+PHONE_NUMBER = os.environ.get('PHONE_NUMBER')
+ACCU_KEY = os.environ.get('ACCU_KEY')  
 ACCUWEATHER_LOCATION_KEY = os.environ.get('ACCUWEATHER_LOCATION_KEY')
 TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_ACCOUNT_TOKEN')
