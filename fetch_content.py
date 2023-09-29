@@ -5,15 +5,17 @@ import os
 
 load_dotenv()
 
-PHONE_NUMBER = os.environ.get('PHONE_NUMBER')
-ACCU_KEY = os.environ.get('ACCU_KEY')  
-ACCUWEATHER_LOCATION_KEY = os.environ.get('ACCUWEATHER_LOCATION_KEY')
-TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_ACCOUNT_TOKEN')
-TWILIO_MESSAGE_SERVICE_SID = os.environ.get('MESSAGE__ID')
 
-print(os.environ)
-# client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+PHONE_NUMBER = os.getenv('PHONE_NUMBER')
+ACCU_KEY = os.getenv('ACCU_KEY')
+ACCUWEATHER_LOCATION_KEY = os.getenv('ACCUWEATHER_LOCATION_KEY')
+
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')  
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_ACCOUNT_TOKEN')
+TWILIO_MESSAGE_SERVICE_SID = os.getenv('MESSAGE__ID')
+
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+print(client)
 
 weather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/1day/{ACCUWEATHER_LOCATION_KEY}?apikey={ACCU_KEY}&details=True&metric=True"
 
